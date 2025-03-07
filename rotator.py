@@ -5,14 +5,14 @@ from datetime import datetime
 
 start = datetime.now()
 
-def image_rotator(image_path):
-	start = datetime.now()
+def image_rotator(image):
+	# start = datetime.now()
 	# Настройка пути к Tesseract
 	pytesseract.pytesseract.tesseract_cmd = r'C:\Users\Huawei\Desktop\PDFNN\tesseract\tesseract.exe'
 	pytesseract.pytesseract.tessdata_dir_config = r'--tessdata-dir "C:\Users\Huawei\Desktop\PDFNN\tesseract\tessdata"'
 
 	# Загрузка изображения
-	image = cv2.imread(image_path)
+	# image = cv2.imread(image_path)
 	rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 	results = pytesseract.image_to_osd(rgb, output_type=Output.DICT)
 
@@ -27,14 +27,15 @@ def image_rotator(image_path):
 
 			rotate_counter += 1
 
-	cv2.imwrite(image_path, image)
-	lang_group = results["script"]
-	angle = rotate_counter * 90
+	return image
+	# cv2.imwrite(image_path, image)
+	# lang_group = results["script"]
+	# angle = rotate_counter * 90
 
-	end = datetime.now()
+	# end = datetime.now()
 
 	# Вывод информации о результате
 	print(f"Изображение {image_path} было повернуто на {angle} градусов")
 	print(f"Распознаны {lang_group} символы, затраченное время {end - start}")
 
-image_rotator("img/page_3.png")
+# image_rotator("img/page_3.png")
