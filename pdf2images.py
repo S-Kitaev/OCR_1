@@ -1,13 +1,13 @@
 import cv2
 import numpy as np
-import easyocr
 import fitz
 import os
-import pytesseract
 
 from rotator import image_rotator
 
-def pdf_to_images(pdf_path, output_folder):
+output_folder = "img"
+
+def pdf_to_images(pdf_path):
     # Открываем PDF файл
     pdf_document = fitz.open(pdf_path)
 
@@ -48,5 +48,5 @@ def pdf_to_images(pdf_path, output_folder):
     pdf_document.close()
 
 # Пример использования
-pdf_to_images("test.pdf", "img")
+pdf_to_images("test.pdf")
 
