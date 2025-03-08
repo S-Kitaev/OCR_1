@@ -1,30 +1,35 @@
 import cv2
 import pytesseract
-from pytesseract import Output
+from pytesseract import Output, TesseractError
 from datetime import datetime
 
 start = datetime.now()
 
 def image_rotator(image):
-	# start = datetime.now()
 	# Настройка пути к Tesseract
-	pytesseract.pytesseract.tesseract_cmd = r'C:\Users\Huawei\Desktop\PDFNN\tesseract\tesseract.exe'
-	pytesseract.pytesseract.tessdata_dir_config = r'--tessdata-dir "C:\Users\Huawei\Desktop\PDFNN\tesseract\tessdata"'
+	pytesseract.pytesseract.tesseract_cmd = r'tesseract\tesseract.exe'
+	pytesseract.pytesseract.tessdata_dir_config = r'--tessdata-dir "tesseract\tessdata"'
 
-	# Загрузка изображения
-	# image = cv2.imread(image_path)
+	# Преобразуем изображение в RGB
 	rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-	results = pytesseract.image_to_osd(rgb, output_type=Output.DICT)
+
+	try:
+		results = pytesseract.image_to_osd(rgb, output_type=Output.DICT)
+	except TesseractError as e:
+		print(f"Ошибка обработки изображения: {e}")
+		return image  # Возвращаем исходное изображение без поворота
 
 	rotate_counter = 0
 	# Если текст не кириллица, поворачиваем изображение
 	if results["script"] != "Cyrillic":
-
 		while results["script"] != "Cyrillic" and rotate_counter < 4:
 			image = cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
 			rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # Обновляем изображение
-			results = pytesseract.image_to_osd(rgb, output_type=Output.DICT)
-
+			try:
+				results = pytesseract.image_to_osd(rgb, output_type=Output.DICT)
+			except TesseractError as e:
+				print(f"Ошибка обработки изображения при повороте: {e}")
+				break  # Прекращаем попытки поворота
 			rotate_counter += 1
 
 	return image

@@ -47,6 +47,3 @@ def pdf_to_images(pdf_path):
     # Закрываем PDF файл
     pdf_document.close()
 
-# Пример использования
-pdf_to_images("test.pdf")
-
