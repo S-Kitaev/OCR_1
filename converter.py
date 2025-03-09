@@ -1,3 +1,4 @@
+import shutil
 import argparse
 from PIL import Image
 import pytesseract
@@ -39,6 +40,9 @@ def process_images():
                 f.write(f"||                      Страница {file + 1}                          ||\n")
                 f.write(f"||===========================================================|| \n\n\n")
                 f.write(result)
+
+    if os.path.exists(folder):
+        shutil.rmtree(folder)
 
 def main():
     parser = argparse.ArgumentParser(description="PDF to text converter")
